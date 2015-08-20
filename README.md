@@ -8,6 +8,24 @@ As requested by this poster on the C line of the NYC subway:
 
 [treescount.nycgovparks.org](https://treescount.nycgovparks.org/)
 
-another sighting:
+## Development
 
-![join-the-counter-Culture](https://raw.githubusercontent.com/katazmic/buddeep-treespotter/master/counterCulture.JPG)
+Please fork the repo and submit pull requests as needed.
+
+The `data` directory holds scripts for pulling down datasets. The directory also
+stores the actual datasets when fetched, but note that these should not be
+committed into the repo. Use `.gitignore` files to avoid such issues.
+
+The `models` directory holds Caffe model descriptions. It may also store trained
+weights which should not be committed into the repo. Again, use `.gitignore`
+files to avoid issues.
+
+The `tools` directory contains subproject code in its subdirectories. Any new
+code should exist in a subdirectory of the `tools` directory.
+
+Please follow these coding style guides where relevant:
+
+* [Python](http://google.github.io/styleguide/pyguide.html)
+* [C++](http://google.github.io/styleguide/cppguide.html)
+* [Shell](http://google.github.io/styleguide/pyguide.html)
+* [JavaScript](https://github.com/airbnb/javascript)
