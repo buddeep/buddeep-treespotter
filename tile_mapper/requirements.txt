@@ -1,0 +1,8 @@
+click==5.1
+cligj==0.3.0
+Fiona==1.5.1
+numpy==1.9.2
+pyproj==1.9.4
+Shapely==1.5.9
+six==1.9.0
+wheel==0.24.0
