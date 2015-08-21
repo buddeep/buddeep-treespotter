@@ -1,5 +1,6 @@
 import os, sys, getopt
-from tile_map import TileMap 
+from tile_map import TileMap, TileMapBoundsError
+from tree_list import TreeList
 
 def main(argv):
     usage_string = 'python tools/cut_training_images --trees_dir data/trees --map_dir data/maps/2014 --slices_dir data/slices/2014_64px --slice_size=64'
@@ -46,14 +47,16 @@ def main(argv):
         os.makedirs(slices_1_dir)
 
     tile_map = TileMap(map_dir)
-
-    #TODO slice training images using trees.kml
-    #
-    #stateplane = [980101,195799]
-    #region = tile_map.crop_around_stateplane(stateplane,slice_size)
-    #tree_id = 1001
-    #slice_fn = '{}/{}/{}.jpg'.format(slices_dir,'1',tree_id)
-    #region.save(slice_fn)
+    tree_list = TreeList(trees_dir)
+    for tree in tree_list:
+        try:
+            region = tile_map.crop_around_latlng(tree['latlng'],slice_size)
+            slice_fn = '{}/{}/{}.jpg'.format(slices_dir,'1',tree['id'])
+            region.save(slice_fn)
+            print slice_fn
+        except TileMapBoundsError:
+            print "WARNING: tree out of bounds: {}".format(tree)
+            pass
 
 if __name__ == "__main__":
-       main(sys.argv[1:])
+    main(sys.argv[1:])

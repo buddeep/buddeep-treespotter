@@ -1,5 +1,9 @@
-import json, csv, pyproj
+import json, csv
 from PIL import Image
+from coord_utils import CoordUtils
+
+class TileMapBoundsError(Exception):
+    pass
 
 class TileMap:
     map_dir = ''
@@ -38,7 +42,7 @@ class TileMap:
         upper = [pixel[0]+l2rad, pixel[1]+l2rad]
         # TODO grab pixels from multiple tiles
         if (lower[0] < 0 or lower[1] < 0 or upper[1] > width or upper[1] > height):
-            raise Exception("out of bounds")
+            raise TileMapBoundsError("out of bounds")
         # PIL origin at upper left
         # our origin at lower left
         pil_left  = lower[0]
@@ -59,53 +63,19 @@ class TileMap:
         eing = stateplane[0]
         ning = stateplane[1]
         if (eing < self.origin[0] or eing > self.northeast[0]):
-            raise Exception("out of bounds")
+            raise TileMapBoundsError("out of bounds")
         if (ning < self.origin[1] or ning > self.northeast[1]):
-            raise Exception("out of bounds")
+            raise TileMapBoundsError("out of bounds")
         ediff = eing - self.origin[0]
         ndiff = ning - self.origin[1]
-        tile = [ediff/self.tile_coord_size[0],ndiff/self.tile_coord_size[1]]
-        pixel = [ediff%self.tile_coord_size[0],ndiff%self.tile_coord_size[1]]
+        tile = [int(ediff/self.tile_coord_size[0]),int(ndiff/self.tile_coord_size[1])]
+        pixel = [int(ediff%self.tile_coord_size[0]),int(ndiff%self.tile_coord_size[1])]
         return [tile,pixel]
 
     def tilepixel_with_latlng(self,latlng):
-        stateplane = self.stateplan_for_latlng(latlng);
-        return self.tile_with_stateplan(stateplane)
+        stateplane = CoordUtils.stateplane_for_latlng(latlng);
+        return self.tilepixel_with_stateplane(stateplane)
 
     def pixels_around_latlng(self,latlng,width):
-        stateplane = self.stateplan_for_latlng(latlng);
-        return self.pixels_around_stateplan(stateplane)
-
-    def stateplane_for_latlng(self,latlng,epsg="2908"):
-        """
-        Function accepts a latlng co-ordinate and returns a stateplane co-ordinate
-        -- latlng is a set in the form of (latitude,longitude)
-        -- stateplane is a set in the form of (easting,northing)
-        -- EPSG is the stateplane identifier which defaults to the identifier for Manhattan:
-                EPSG:2908: NAD83(HARN) / New York Long Island (ftUS)
-        """
-        lat,lng = latlng[0], latlng[1]
-        sp_epsg = "EPSG:"+epsg 
-        # Preserve units keeps projection in ftUS
-        stateplane_projection = pyproj.Proj(init=sp_epsg, preserve_units=True) 
-        wgs84_projection = pyproj.Proj('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs')
-        stateplane = pyproj.transform(wgs84_projection,stateplane_projection,lng,lat)
-        return stateplane
-        
-    
-    def latlng_for_stateplane(self,stateplane,epsg="2908"):
-        """
-        Function accepts a stateplane co-ordinate and returns a latlng coordinate set
-        -- latlng is a set in the form of (latitude,longitude)
-        -- stateplane is a set in the form of (easting,northing)
-        -- EPSG is the stateplane identifier which defaults to the identifier for Manhattan:
-                EPSG:2908: NAD83(HARN) / New York Long Island (ftUS)
-        """
-        easting, northing = stateplane[0], stateplane[1]
-        sp_epsg = "EPSG:"+epsg 
-        # Preserve units keeps projection in ftUS
-        stateplane_projection = pyproj.Proj(init=sp_epsg, preserve_units=True)
-        wgs84_projection = pyproj.Proj('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs')
-        longlat = pyproj.transform(stateplane_projection,wgs84_projection,easting,northing)
-        # flip longLat to latlng
-        return (longlat[1],longlat[0])
+        stateplane = CoordUtils.stateplane_for_latlng(latlng);
+        return self.pixels_around_stateplane(stateplane)
