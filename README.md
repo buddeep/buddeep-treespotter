@@ -27,5 +27,5 @@ Please follow these coding style guides where relevant:
 
 * [Python](http://google.github.io/styleguide/pyguide.html)
 * [C++](http://google.github.io/styleguide/cppguide.html)
-* [Shell](http://google.github.io/styleguide/pyguide.html)
+* [Shell](http://google.github.io/styleguide/shell.xml)
 * [JavaScript](https://github.com/airbnb/javascript)
