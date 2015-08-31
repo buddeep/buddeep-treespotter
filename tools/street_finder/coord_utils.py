@@ -43,8 +43,8 @@ class CoordUtils:
         
         """ 
         PARAMS:
-        1. linestring – set containing two latlng coordinate pairs
-        2. waypoint_distance_in_feet – distance between waypoints in feet. Default is set to 32.
+        1. linestring - set containing two latlng coordinate pairs
+        2. waypoint_distance_in_feet - distance between waypoints in feet. Default is set to 32.
         
         RETURN VALUE: 
         List of latlng sets for waypoints on the linestring
