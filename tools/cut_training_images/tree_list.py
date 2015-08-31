@@ -38,8 +38,10 @@ class TreeList:
                     atrval = li.find(".//*[@class='atr-value']")
                     tree_id = atrval.text
             tree_latlng = [tree.geometry.y,tree.geometry.x]
+            tree_stateplane = CoordUtils.stateplane_for_latlng(tree_latlng)
             return {'id': tree_id,
                 'kml_id': tree_kml_id,
+                'stateplane': tree_stateplane,
                 'latlng': tree_latlng}
         else:
             raise StopIteration()
