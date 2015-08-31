@@ -75,7 +75,7 @@ def main(argv):
             label = (0 if (len(trees_seen) == 0) else 1)
             try:
                 region = tile_map.crop_around_stateplane(waypoint,slice_size)
-                slice_fn = '{}/{}/stateplane-{}-{}.jpg'.format(slices_dir,label,street['kml_id'],i)
+                slice_fn = '{}/{}/segment-{}-{}.jpg'.format(slices_dir,label,street['kml_id'],i)
                 region.save(slice_fn)
                 print slice_fn
             except TileMapBoundsError:
