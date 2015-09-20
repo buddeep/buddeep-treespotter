@@ -1,0 +1,12 @@
+net: "models/naive_64px/train_test.prototxt"
+snapshot_prefix: "models/naive_64px/trained/snapshot"
+test_iter: 10
+test_interval: 100
+base_lr: 0.001
+momentum: 0.9
+weight_decay: 0.004
+lr_policy: "fixed"
+display: 10
+max_iter: 500
+snapshot: 100
+solver_mode: CPU

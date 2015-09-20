@@ -1,0 +1,7 @@
+name: "naive_64px_deploy"
+input: "data"
+input_dim: 1
+input_dim: 3
+input_dim: 64
+input_dim: 64
+
